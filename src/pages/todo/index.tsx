@@ -1,7 +1,9 @@
 import React from 'react'
 
+import CenterContainer from 'src/components/common/centerContainer'
+
 const Todo = () => {
-  return <div>Todo</div>
+  return <CenterContainer>Todo</CenterContainer>
 }
 
 export default Todo

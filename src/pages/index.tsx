@@ -1,5 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+
+import CenterContainer from 'src/components/common/centerContainer'
 import Link from 'src/components/common/link'
 import Button from 'src/components/common/button'
 
@@ -12,14 +14,23 @@ const HeadContainer = () => {
   )
 }
 
+const MainContainer = () => {
+  return (
+    <main>
+      <Introduce />
+      <LinkContainer />
+    </main>
+  )
+}
+
 const Introduce = () => {
   return (
-    <div className="flex flex-col gap-2 text-6xl text-blue-200">
+    <section className="flex flex-col gap-2 text-6xl text-blue-200">
       <p>Welcome</p>
       <p>
         My <span className="text-blue-700">Todo</span> App !
       </p>
-    </div>
+    </section>
   )
 }
 
@@ -41,13 +52,10 @@ const LinkContainer = () => {
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <CenterContainer>
       <HeadContainer />
-      <main>
-        <Introduce />
-        <LinkContainer />
-      </main>
-    </div>
+      <MainContainer />
+    </CenterContainer>
   )
 }
 

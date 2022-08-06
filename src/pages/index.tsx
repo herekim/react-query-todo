@@ -5,15 +5,6 @@ import CenterContainer from 'src/components/common/centerContainer'
 import Link from 'src/components/common/link'
 import Button from 'src/components/common/button'
 
-const HeadContainer = () => {
-  return (
-    <Head>
-      <title>Wanted onboarding</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-  )
-}
-
 const MainContainer = () => {
   return (
     <main>
@@ -53,7 +44,6 @@ const LinkContainer = () => {
 const Home: NextPage = () => {
   return (
     <CenterContainer>
-      <HeadContainer />
       <MainContainer />
     </CenterContainer>
   )

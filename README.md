@@ -1,27 +1,43 @@
-# Next.js + Tailwind CSS Example
+# 구현 화면
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+https://user-images.githubusercontent.com/76519867/183237185-eb641dcc-2b60-494f-b584-532c6b81a2cf.mov
 
-## Deploy your own
+# 구현 사항
+## Assignment 1 - Login / SignUp
+- /auth 경로에 로그인 / 회원가입 기능을 개발합니다
+  - 로그인, 회원가입을 별도의 경로로 분리해도 무방합니다
+  - [x] 최소한 이메일, 비밀번호 input, 제출 button을 갖도록 구성해주세요
+- 이메일과 비밀번호의 유효성을 확인합니다
+  - [x] 이메일 조건 : 최소 @, . 포함
+  - [x] 비밀번호 조건 : 8자 이상 입력
+  - [x] 이메일과 비밀번호가 모두 입력되어 있고, 조건을 만족해야 제출 버튼이 활성화 되도록 해주세요
+- 로그인 API를 호출하고, 올바른 응답을 받았을 때 루트 경로로 이동시켜주세요
+  - [x] 응답으로 받은 토큰은 로컬 스토리지에 저장해주세요
+  - [x] 다음 번에 로그인 시 토큰이 존재한다면 루트 경로로 리다이렉트 시켜주세요
+  - [x] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
+## Assignment 2 - Todo List
+- Todo List API를 호출하여 Todo List CRUD 기능을 구현해주세요
+  - [x] 목록 / 상세 영역으로 나누어 구현해주세요
+  - [x] Todo 목록을 볼 수 있습니다.
+  - [x] Todo 추가 버튼을 클릭하면 할 일이 추가 됩니다.
+  - [x] Todo 수정 버튼을 클릭하면 수정 모드를 활성화하고, 수정 내용을 제출하거나 취소할 수 있습니다.
+  - [x] Todo 삭제 버튼을 클릭하면 해당 Todo를 삭제할 수 있습니다.
+- 한 화면 내에서 Todo List와 개별 Todo의 상세를 확인할 수 있도록 해주세요.
+  - [x] 새로고침을 했을 때 현재 상태가 유지되어야 합니다.
+  - [ ] 개별 Todo를 조회 순서에 따라 페이지 뒤로가기를 통하여 조회할 수 있도록 해주세요.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+- 한 페이지 내에서 새로고침 없이 데이터가 정합성을 갖추도록 구현해주세요
+  - [x] 수정되는 Todo의 내용이 목록에서도 실시간으로 반영되어야 합니다
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## 사용 기술
+Next.js, TypeScript, React Query, Recoil, Tailwind CSS, React Hook Form, MUI
 
-## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## 참고 사항
+- Redirect의 경우 특정 페이지(/todo)에 접근 시 토큰이 없으면 로그인 페이지로 이동하도록 했습니다.
+- "개별 Todo를 조회 순서에 따라 페이지 뒤로가기를 통하여 조회할 수 있도록 해주세요."에서 '조회 순서'의 의미를 이해하지 못해 구현하지 못했습니다.
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## 배우고 싶은 것
+- React Query에서 반복되는 코드 줄이기
+- React Query에서 Response 데이터의 타이핑
+- 구조적인 에러 핸들링 처리 방법 (컴포넌트에서 개별적으로 하지않기)

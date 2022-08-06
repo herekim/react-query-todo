@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-// import Accordion from '@mui/material/Accordion'
-// import AccordionSummary from '@mui/material/AccordionSummary'
-// import AccordionDetails from '@mui/material/AccordionDetails'
-// import Typography from '@mui/material/Typography'
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-
 import { useGetTodosQuery, useDeleteTodoMutation } from 'src/service/query'
 
 import CenterContainer from 'src/components/common/centerContainer'
 import TodoModal from 'src/components/todo/todoModal'
 import TodoMain from 'src/components/todo/todoMain'
+import Spinner from 'src/components/common/spinner'
+
+import useRedirect from 'src/hooks/useRedirect'
 
 type Todo = {
   title: string
@@ -18,6 +15,8 @@ type Todo = {
 }
 
 const Todo = () => {
+  const { isRedirect } = useRedirect()
+
   const [isModal, setIsModal] = useState({
     add: false,
     modify: false,
@@ -44,7 +43,7 @@ const Todo = () => {
     refetch()
   }, [isModal.add, isModal.modify])
 
-  if (!todos) return
+  if (!todos || isRedirect) return <Spinner />
 
   return (
     <CenterContainer>

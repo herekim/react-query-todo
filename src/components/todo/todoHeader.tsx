@@ -1,7 +1,7 @@
 import React from 'react'
 
 type Modal = { add: boolean; modify: boolean }
-type TodoHeader = { isModal: Modal; setIsModal: (Modal: Modal) => void }
+type TodoHeader = { isModal: Modal; setIsModal: (modal: Modal) => void }
 
 const TodoHeader = ({ isModal, setIsModal }: TodoHeader) => {
   return (

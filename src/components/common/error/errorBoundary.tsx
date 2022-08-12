@@ -4,7 +4,6 @@ interface Props {
   children?: ReactNode
   fallbackComponent: ({ error, reset }: { error: Error; reset: () => void }) => ReactElement
   onReset: () => void
-  isReset: () => boolean
 }
 
 interface State {

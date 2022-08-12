@@ -12,8 +12,8 @@ interface Props {
 const AsyncBoundary = ({ pendingFallback, rejectedFallback, children }: Props) => {
   return (
     <QueryErrorResetBoundary>
-      {({ reset, isReset }) => (
-        <ErrorBoundary onReset={reset} isReset={isReset} fallbackComponent={rejectedFallback}>
+      {({ reset }) => (
+        <ErrorBoundary onReset={reset} fallbackComponent={rejectedFallback}>
           <Suspense fallback={pendingFallback}>{children}</Suspense>
         </ErrorBoundary>
       )}

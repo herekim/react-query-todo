@@ -41,10 +41,6 @@ const SignUp = () => {
             alert('회원가입에 실패했습니다.')
           }
         },
-        onError: (err) => {
-          alert('회원가입에 실패했습니다.')
-          console.log(err)
-        },
       },
     )
   }

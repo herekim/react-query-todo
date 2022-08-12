@@ -23,13 +23,7 @@ const TodoModal = ({ type, id, closeModal }: { type: ModalType; id?: string; clo
   const title = isModifyModal && todo ? todo.title : ''
   const content = isModifyModal && todo ? todo.content : ''
 
-  const {
-    register,
-    handleSubmit,
-    // watch,
-    // formState: { errors },
-    setValue,
-  } = useForm<Todo>()
+  const { register, handleSubmit, setValue } = useForm<Todo>()
 
   useEffect(() => {
     if (isModifyModal && todo) {
@@ -42,13 +36,7 @@ const TodoModal = ({ type, id, closeModal }: { type: ModalType; id?: string; clo
     updateTodoMutate(
       { title, content, id },
       {
-        onSuccess: (res) => {
-          console.log(res)
-          closeModal()
-        },
-        onError: (err) => {
-          console.log(err)
-        },
+        onSuccess: (_) => closeModal(),
       },
     )
   }
@@ -57,13 +45,7 @@ const TodoModal = ({ type, id, closeModal }: { type: ModalType; id?: string; clo
     createTodoMutate(
       { title, content },
       {
-        onSuccess: (res) => {
-          console.log(res)
-          closeModal()
-        },
-        onError: (err) => {
-          console.log(err)
-        },
+        onSuccess: (_) => closeModal(),
       },
     )
   }

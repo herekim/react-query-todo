@@ -23,9 +23,6 @@ const TodoContainer = () => {
   const deleteTodo = (id: string) => {
     deleteTodoMutate(id, {
       onSuccess: () => refetch(),
-      onError: (err) => {
-        console.log(err)
-      },
     })
   }
 

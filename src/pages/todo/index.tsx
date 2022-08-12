@@ -1,67 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-import { useGetTodosQuery, useDeleteTodoMutation } from 'src/service/query'
+import dynamic from 'next/dynamic'
 
 import CenterContainer from 'src/components/common/centerContainer'
-import TodoModal from 'src/components/todo/todoModal'
-import TodoMain from 'src/components/todo/todoMain'
 import Spinner from 'src/components/common/spinner'
+import ErrorTodo from 'src/components/common/error/errorTodo'
 
-import useRedirect from 'src/hooks/useRedirect'
+import AsyncBoundary from 'src/components/common/error/asyncBoundary'
 
-type Todo = {
-  title: string
-  content: string
-}
+const TodoContainer = dynamic(() => import('src/components/todo/todoContainer'), {
+  ssr: false,
+})
 
 const Todo = () => {
-  const { isRedirect } = useRedirect()
-
-  const [isModal, setIsModal] = useState({
-    add: false,
-    modify: false,
-  })
-
-  const { data: todos, refetch } = useGetTodosQuery()
-  const { mutate: deleteTodoMutate } = useDeleteTodoMutation()
-
-  const [selectedTodo, setSelectedTodo] = useState('')
-
-  const deleteTodo = (id: string) => {
-    deleteTodoMutate(id, {
-      onSuccess: (res) => {
-        console.log(res)
-        refetch()
-      },
-      onError: (err) => {
-        console.log(err)
-      },
-    })
-  }
-
-  useEffect(() => {
-    refetch()
-  }, [isModal.add, isModal.modify])
-
-  if (!todos || isRedirect) return <Spinner />
-
   return (
     <CenterContainer>
-      <TodoMain
-        todos={todos}
-        isModal={isModal}
-        setIsModal={setIsModal}
-        deleteTodo={deleteTodo}
-        setSelectedTodo={setSelectedTodo}
-      />
-      {isModal.add && <TodoModal type="Add" closeModal={() => setIsModal({ ...isModal, add: !isModal.add })} />}
-      {isModal.modify && (
-        <TodoModal
-          type="Modify"
-          id={selectedTodo}
-          closeModal={() => setIsModal({ ...isModal, modify: !isModal.modify })}
-        />
-      )}
+      <AsyncBoundary
+        pendingFallback={<Spinner />}
+        rejectedFallback={({ error, reset }) => <ErrorTodo error={error} reset={reset} />}
+      >
+        <TodoContainer />
+      </AsyncBoundary>
     </CenterContainer>
   )
 }

@@ -8,7 +8,17 @@ import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query
 import AxiosInstance from './axiosInstance'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            suspense: true,
+            useErrorBoundary: true,
+          },
+        },
+      }),
+  )
 
   return (
     <QueryClientProvider client={queryClient}>

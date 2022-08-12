@@ -36,14 +36,28 @@ export const useDeleteTodoMutation = () => {
   return useMutation(async (id: string) => await axios.delete(`${API.TODOS}/${id}`))
 }
 
-export const useGetTodoQuery = (id: string, config: { enabled?: boolean }) => {
+export const useGetTodoQuery = (
+  id: string,
+  {
+    enabled,
+    suspense = true,
+    useErrorBoundary = true,
+  }: { enabled?: boolean; suspense?: boolean; useErrorBoundary?: boolean },
+) => {
   return useQuery(
     ['todo', id],
     async (): Promise<Todo> => await axios.get(`${API.TODOS}/${id}`).then((res) => res.data.data),
-    config,
+    { enabled, suspense, useErrorBoundary },
   )
 }
 
 export const useGetTodosQuery = () => {
-  return useQuery(['todos'], async (): Promise<Todo[]> => await axios.get(`${API.TODOS}`).then((res) => res.data.data))
+  return useQuery(
+    ['todos'],
+    async (): Promise<Todo[]> =>
+      await axios.get(`${API.TODOS}`).then(async (res) => {
+        return res.data.data
+      }),
+    { suspense: true, useErrorBoundary: true },
+  )
 }

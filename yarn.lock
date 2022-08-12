@@ -169,6 +169,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.3.0.tgz#ea89004119dc42db2e1dba0f97d553f7372f6fcb"
   integrity sha512-AHPmaAx+RYfZz0eYu6Gviiagpmiyw98ySSlQvCUhVGDRtDFe4DBS0x1bSjdF3gqUDYOczB+yYvBTtEylYSdRhg==
 
+"@iconify/react@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@iconify/react/-/react-3.2.2.tgz#ab5241dc01562076bae3b0c22238aff7e5f029cc"
+  integrity sha512-z3+Jno3VcJzgNHsN5mEvYMsgCkOZkydqdIwOxjXh45+i2Vs9RGH68Y52vt39izwFSfuYUXhaW+1u7m7+IhCn/g==
+
 "@mui/base@5.0.0-alpha.92":
   version "5.0.0-alpha.92"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.92.tgz#5c2ca31801fe21a8fec9bfda2cf5f44b1e3c7284"

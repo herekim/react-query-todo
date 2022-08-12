@@ -1,5 +1,4 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
 
 import CenterContainer from 'src/components/common/centerContainer'
 import Link from 'src/components/common/link'

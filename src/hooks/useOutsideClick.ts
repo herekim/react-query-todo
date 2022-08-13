@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const useOutsideClick = (ref: any) => {
+const useOutsideClick = (ref: React.RefObject<HTMLElement>) => {
   const [clicked, setClicked] = useState(false)
 
   useEffect(() => {
-    const handleClick = (e: any) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setClicked(true)
+    const handleClick = (event: Event) => {
+      if (event.target instanceof HTMLElement) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setClicked(true)
+        }
       }
     }
 

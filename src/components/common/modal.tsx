@@ -8,7 +8,7 @@ type Modal = {
 }
 
 const Modal = ({ children, handleClick }: Modal) => {
-  const modalRef = useRef<HTMLDivElement | null>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const { clicked } = useOutsideClick(modalRef)
 
   useEffect(() => {

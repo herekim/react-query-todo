@@ -32,13 +32,15 @@ const TodoContainer = () => {
 
   return (
     <>
-      <TodoMain
-        todos={todos}
-        isModal={isModal}
-        setIsModal={setIsModal}
-        deleteTodo={deleteTodo}
-        setSelectedTodo={setSelectedTodo}
-      />
+      {todos && (
+        <TodoMain
+          todos={todos}
+          isModal={isModal}
+          setIsModal={setIsModal}
+          deleteTodo={deleteTodo}
+          setSelectedTodo={setSelectedTodo}
+        />
+      )}
       {isModal.add && <TodoModal type="Add" closeModal={() => setIsModal({ ...isModal, add: !isModal.add })} />}
       {isModal.modify && (
         <TodoModal

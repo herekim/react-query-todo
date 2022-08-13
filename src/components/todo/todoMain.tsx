@@ -3,6 +3,8 @@ import React from 'react'
 import TodoHeader from 'src/components/todo/todoHeader'
 import TodoList from 'src/components/todo/todoList'
 
+import { Todo } from 'src/service/query'
+
 type Modal = { add: boolean; modify: boolean }
 
 const TodoMain = ({
@@ -12,7 +14,7 @@ const TodoMain = ({
   deleteTodo,
   setSelectedTodo,
 }: {
-  todos: any
+  todos: Todo[]
   isModal: Modal
   setIsModal: (modal: Modal) => void
   deleteTodo: (id: string) => void

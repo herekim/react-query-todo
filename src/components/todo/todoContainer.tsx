@@ -15,26 +15,26 @@ const TodoContainer = () => {
     modify: false,
   })
 
-  const { data: todos, refetch } = useGetTodosQuery()
-  const { mutate: deleteTodoMutate } = useDeleteTodoMutation()
+  const getTodosQuery = useGetTodosQuery()
+  const deleteTodoMutation = useDeleteTodoMutation()
 
   const [selectedTodo, setSelectedTodo] = useState('')
 
   const deleteTodo = (id: string) => {
-    deleteTodoMutate(id, {
-      onSuccess: () => refetch(),
+    deleteTodoMutation.mutate(id, {
+      onSuccess: () => getTodosQuery.refetch(),
     })
   }
 
   useEffect(() => {
-    refetch()
+    getTodosQuery.refetch()
   }, [isModal.add, isModal.modify])
 
   return (
     <>
-      {todos && (
+      {getTodosQuery.isSuccess && (
         <TodoMain
-          todos={todos}
+          todos={getTodosQuery.data}
           isModal={isModal}
           setIsModal={setIsModal}
           deleteTodo={deleteTodo}

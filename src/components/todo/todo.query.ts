@@ -9,6 +9,7 @@ export type Todo = {
   createdAt: string
   updatedAt: string
 }
+
 export const useCreateTodoMutation = () => {
   return useMutation(async (body: Pick<Todo, 'title' | 'content'>) => await axios.post(`${API.TODOS}`, body))
 }
@@ -21,31 +22,28 @@ export const useUpdateTodoMutation = () => {
 }
 
 export const useDeleteTodoMutation = () => {
-  return useMutation(async (id: string) => await axios.delete(`${API.TODOS}/${id}`))
+  return useMutation(async (id: Pick<Todo, 'id'>) => await axios.delete(`${API.TODOS}/${id}`))
 }
 
-export const useGetTodoQuery = (
-  id: string,
-  {
-    enabled,
-    suspense = true,
-    useErrorBoundary = true,
-  }: { enabled?: boolean; suspense?: boolean; useErrorBoundary?: boolean },
-) => {
+export const useGetTodoQuery = (id: Pick<Todo, 'id'>, { enabled }: { enabled?: boolean }) => {
   return useQuery(
-    ['todo', id],
+    todoKeys.todo(id),
     async (): Promise<Todo> => await axios.get(`${API.TODOS}/${id}`).then((res) => res.data.data),
-    { enabled, suspense, useErrorBoundary },
+    { enabled },
   )
 }
 
 export const useGetTodosQuery = () => {
   return useQuery(
-    ['todos'],
+    todoKeys.all,
     async (): Promise<Todo[]> =>
       await axios.get(`${API.TODOS}`).then(async (res) => {
         return res.data.data
       }),
-    { suspense: true, useErrorBoundary: true },
   )
+}
+
+const todoKeys = {
+  all: ['todos'] as const,
+  todo: (id: Pick<Todo, 'id'>) => ['todo', id] as const,
 }

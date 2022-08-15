@@ -2,18 +2,6 @@ import axios from 'axios'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import API from 'src/service/api'
 
-type Sign = {
-  email: string
-  password: string
-}
-export const useSigninMutation = () => {
-  return useMutation(async (body: Sign) => await axios.post(`${API.SIGNIN}`, body))
-}
-
-export const useSignUpMutation = () => {
-  return useMutation(async (body: Sign) => await axios.post(`${API.SIGNUP}`, body))
-}
-
 export type Todo = {
   title: string
   content: string

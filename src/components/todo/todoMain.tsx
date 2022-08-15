@@ -3,7 +3,7 @@ import React from 'react'
 import TodoHeader from 'src/components/todo/todoHeader'
 import TodoList from 'src/components/todo/todoList'
 
-import { Todo } from 'src/service/query'
+import { Todo } from './todo.query'
 
 type Modal = { add: boolean; modify: boolean }
 

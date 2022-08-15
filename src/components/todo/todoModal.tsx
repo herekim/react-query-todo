@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { useGetTodoQuery, useCreateTodoMutation, useUpdateTodoMutation } from 'src/service/query'
+import { useGetTodoQuery, useCreateTodoMutation, useUpdateTodoMutation } from './todo.query'
 
 import Modal from 'src/components/common/modal'
 import BackgroundBlur from 'src/components/common/backgroundBlur'

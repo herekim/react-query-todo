@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useGetTodosQuery, useDeleteTodoMutation } from 'src/service/query'
+import { useGetTodosQuery, useDeleteTodoMutation } from './todo.query'
 
 import useRedirect from 'src/hooks/useRedirect'
 

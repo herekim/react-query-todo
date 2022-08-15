@@ -6,7 +6,7 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
-import { Todo } from 'src/service/query'
+import { Todo } from './todo.query'
 
 type Modal = { add: boolean; modify: boolean }
 

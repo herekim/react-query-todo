@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useSigninMutation } from 'src/service/query'
+import { useSigninMutation } from './signin.query'
 import { useSetRecoilState } from 'recoil'
 import { tokenState } from 'src/client/state'
 

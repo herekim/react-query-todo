@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useGetTodosQuery, useDeleteTodoMutation } from './todo.query'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { useGetTodosQuery, useDeleteTodoMutation, todoKeys } from './todo.query'
 
 import useRedirect from 'src/hooks/useRedirect'
 
@@ -9,6 +11,8 @@ import TodoMain from 'src/components/todo/todoMain'
 
 const TodoContainer = () => {
   useRedirect()
+
+  const queryClient = useQueryClient()
 
   const [isModal, setIsModal] = useState({
     add: false,
@@ -22,12 +26,14 @@ const TodoContainer = () => {
 
   const deleteTodo = (id: string) => {
     deleteTodoMutation.mutate(id, {
-      onSuccess: () => getTodosQuery.refetch(),
+      onSuccess: () => queryClient.invalidateQueries(todoKeys.all),
     })
   }
 
   useEffect(() => {
-    getTodosQuery.refetch()
+    if (!isModal.add || !isModal.modify) {
+      queryClient.invalidateQueries(todoKeys.all)
+    }
   }, [isModal.add, isModal.modify])
 
   return (

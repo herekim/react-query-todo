@@ -22,10 +22,10 @@ export const useUpdateTodoMutation = () => {
 }
 
 export const useDeleteTodoMutation = () => {
-  return useMutation(async (id: Pick<Todo, 'id'>) => await axios.delete(`${API.TODOS}/${id}`))
+  return useMutation(async (id: string) => await axios.delete(`${API.TODOS}/${id}`))
 }
 
-export const useGetTodoQuery = (id: Pick<Todo, 'id'>, { enabled }: { enabled?: boolean }) => {
+export const useGetTodoQuery = (id: string, { enabled }: { enabled?: boolean }) => {
   return useQuery(
     todoKeys.todo(id),
     async (): Promise<Todo> => await axios.get(`${API.TODOS}/${id}`).then((res) => res.data.data),
@@ -43,7 +43,7 @@ export const useGetTodosQuery = () => {
   )
 }
 
-const todoKeys = {
+export const todoKeys = {
   all: ['todos'] as const,
-  todo: (id: Pick<Todo, 'id'>) => ['todo', id] as const,
+  todo: (id: string) => ['todo', id] as const,
 }

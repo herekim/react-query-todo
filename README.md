@@ -51,6 +51,8 @@ Next.js, TypeScript, React Query, Recoil, Tailwind CSS, React Hook Form, MUI
 
 # 1차 리팩토링
 
+https://user-images.githubusercontent.com/76519867/184578404-fcc7f82c-2261-49c4-beda-acb932eec611.mov
+
 ## [비동기 처리 위임하기](https://github.com/herekim/wanted-pre-onboarding-challenge-fe-1/commit/ada145791ea171edef19c081d60d817548c39329)
 
 ### 바꾸고 싶었던 문제

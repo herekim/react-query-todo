@@ -434,3 +434,8 @@ const useOutsideClick = (ref: React.RefObject<HTMLElement>) => {
   - 정리
     - 현재 상황에서는 최신화가 필요한 getTodosQuery를 같은 컴포넌트에서 가지고 오고 있기 때문에 refetch도 괜찮은 옵션
     - 하지만 최신화가 필요한 쿼리가 같은 컴포넌트에 없는 상황이라면 invalidateQueries와 쿼리키로 최신화해주면 됨
+
+  ### 참고 자료
+
+  [TKDodo's blog](https://tkdodo.eu/blog/)  
+  [stale-while-revalidate 전략은 어떻게 활용되고 있을까](https://youthfulhps.dev/web/stale-while-ravalidate/#stale-while-revalidate)

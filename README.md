@@ -231,3 +231,206 @@ const useOutsideClick = (ref: React.RefObject<HTMLElement>) => {
 
 [React에서 선언적으로 비동기 다루기](https://jbee.io/react/error-declarative-handling-1/)<br/>
 [React ErrorBoundary를 사용하여 에러 처리 개선하기 (with react-query)](https://velog.io/@suyeon9456/React-Query-Error-Boundary-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0#error-%EB%B0%9C%EC%83%9D-%ED%9B%84-%EC%BF%BC%EB%A6%AC-%EC%9E%AC%EC%8B%9C%EB%8F%84)
+
+# 2차 리팩토링
+
+## React Query 더욱 잘 활용하기
+
+### Type Narrowing
+
+- 기존 코드
+
+  - isSuccess와 data를 구조분해할당으로 가져왔다
+  - 이 경우 isSuccess로 data의 존재 여부를 타입 체킹할 수 없다
+
+  ```tsx
+  const { data: todos, refetch, isSuccess } = useGetTodosQuery()
+  const { mutate: deleteTodoMutate } = useDeleteTodoMutation()
+
+  const [selectedTodo, setSelectedTodo] = useState('')
+
+  const deleteTodo = (id: string) => {
+    deleteTodoMutate(id, {
+      onSuccess: () => refetch(),
+    })
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [isModal.add, isModal.modify])
+
+  // todos의 타입은 Todo[] | undefined 이다
+  // 타입스크립트가 제대로 체크하지 못함
+  return <>{isSuccess && <TodoMain todos={todos} />}</>
+  ```
+
+- 수정한 코드
+
+  - getTodosQuery를 통해 접근하므로 정상적으로 타입체크가 가능하다
+
+  ```tsx
+  const getTodosQuery = useGetTodosQuery()
+  const deleteTodoMutation = useDeleteTodoMutation()
+
+  const [selectedTodo, setSelectedTodo] = useState('')
+
+  const deleteTodo = (id: string) => {
+    deleteTodoMutation.mutate(id, {
+      onSuccess: () => getTodosQuery.refetch(),
+    })
+  }
+
+  useEffect(() => {
+    getTodosQuery.refetch()
+  }, [isModal.add, isModal.modify])
+
+  return <>{getTodosQuery.isSuccess && <TodoMain todos={getTodosQuery.todos} />}</>
+  ```
+
+### Colocation
+
+- 기존 Query 파일 위치
+
+  📦 service  
+  ┣ 📜 api.ts  
+  ┗ 📜 query.ts
+
+- 수정한 Query 파일 위치  
+   📦 auth  
+   ┣ 📜 signin.query.tsx  
+   ┣ 📜 signin.tsx  
+   ┣ 📜 signup.query.tsx  
+   ┗ 📜 signup.tsx
+
+- 장점
+
+  - 해당 컴포넌트에서 필요한 Query 관련 정보를 찾기 쉬움
+  - 구조적으로 Query 파일이 분리 가능
+
+- 단점
+
+  - a.tsx에서 사용되는 Query가 b.tsx에서도 필요할 경우 처리 방법을 고려해야함
+
+    📦 A  
+    ┣ 📜 a.query.tsx  
+    ┣ 📜 a.tsx  
+    📦 B  
+    ┣ 📜 b.query.tsx  
+    ┣ 📜 b.tsx
+
+- 결론
+  - 옳고 그름의 문제는 아니고 선호도의 차이인 것 같다
+  - 개인적으로는 Colocation 방식에 선호도가 있다
+  - 이유는 다음과 같다
+    1. Query는 결국 컴포넌트에서 사용하기 위해 존재하므로 컴포넌트와 같은 위치에 놓았을 때 해당 쿼리 정보를 찾기 쉽고, 해당 쿼리 파일의 내용이 예상 가능하다.
+    2. 단점에서 언급한 재사용 문제도 A, B 폴더의 상위 폴더에 쿼리 파일을 위치시키는 등의 방법으로 해결 가능하다.
+
+### Query Key Factories
+
+- 기존 코드
+
+  - 각각 쿼리 키를 설정해둠
+
+  ```tsx
+  export const useGetTodoQuery = (id: string, { enabled }: { enabled?: boolean }) => {
+    return useQuery(
+      ['todo', id],
+      async (): Promise<Todo> => await axios.get(`${API.TODOS}/${id}`).then((res) => res.data.data),
+      { enabled },
+    )
+  }
+
+  export const useGetTodosQuery = () => {
+    return useQuery(
+      ['todos'],
+      async (): Promise<Todo[]> =>
+        await axios.get(`${API.TODOS}`).then(async (res) => {
+          return res.data.data
+        }),
+    )
+  }
+  ```
+
+- 수정한 코드
+
+  - todoKeys 객체를 만듦
+  - 구조적으로 QueryKey를 관리 가능
+
+  ```tsx
+  export const useGetTodoQuery = (id: string, { enabled }: { enabled?: boolean }) => {
+    return useQuery(
+      todoKeys.todo(id),
+      async (): Promise<Todo> => await axios.get(`${API.TODOS}/${id}`).then((res) => res.data.data),
+      { enabled },
+    )
+  }
+
+  export const useGetTodosQuery = () => {
+    return useQuery(
+      todoKeys.all,
+      async (): Promise<Todo[]> =>
+        await axios.get(`${API.TODOS}`).then(async (res) => {
+          return res.data.data
+        }),
+    )
+  }
+
+  export const todoKeys = {
+    all: ['todos'] as const,
+    todo: (id: string) => ['todo', id] as const,
+  }
+  ```
+
+  ### 데이터 최신 상태로 만들기
+
+  - 기존 코드
+
+    - refetch를 통해 데이터 최신화
+
+    ```tsx
+    const getTodosQuery = useGetTodosQuery()
+    const deleteTodoMutation = useDeleteTodoMutation()
+
+    const [selectedTodo, setSelectedTodo] = useState('')
+
+    const deleteTodo = (id: string) => {
+      deleteTodoMutation.mutate(id, {
+        onSuccess: () => getTodosQuery.refetch(),
+      })
+    }
+
+    useEffect(() => {
+      if (!isModal.add || !isModal.modify) {
+        getTodosQuery.refetch()
+      }
+    }, [isModal.add, isModal.modify])
+    ```
+
+  - 수정한 코드
+
+    - queryClient.invalidateQueries를 통해 해당 쿼리키 데이터 최신화
+
+    ```tsx
+    const queryClient = useQueryClient()
+
+    const getTodosQuery = useGetTodosQuery()
+    const deleteTodoMutation = useDeleteTodoMutation()
+
+    const [selectedTodo, setSelectedTodo] = useState('')
+
+    const deleteTodo = (id: string) => {
+      deleteTodoMutation.mutate(id, {
+        onSuccess: () => queryClient.invalidateQueries(todoKeys.all),
+      })
+    }
+
+    useEffect(() => {
+      if (!isModal.add || !isModal.modify) {
+        queryClient.invalidateQueries(todoKeys.all)
+      }
+    }, [isModal.add, isModal.modify])
+    ```
+
+  - 정리
+    - 현재 상황에서는 최신화가 필요한 getTodosQuery를 같은 컴포넌트에서 가지고 오고 있기 때문에 refetch도 괜찮은 옵션
+    - 하지만 최신화가 필요한 쿼리가 같은 컴포넌트에 없는 상황이라면 invalidateQueries와 쿼리키로 최신화해주면 됨
